@@ -1,8 +1,7 @@
-const express = require('express');
-const router  = express.Router();
+const express          = require('express');
+const router           = express.Router();
+const OrdersController = require('../controllers/ordersController.js');
 
-router.get('/hello', function(req, res) {
-  res.send('hello');
-});
+router.get('/findAllOrdersToday', OrdersController.getOrdersToday);
 
 module.exports = router;
