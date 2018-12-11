@@ -12,32 +12,26 @@ CREATE TABLE users (
   created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE restaurants (
-  restaurant_id serial PRIMARY KEY,
-  restaurant_name VARCHAR(100) NOT NULL UNIQUE,
-  restaurant_phone_number VARCHAR(64) CHECK (LENGTH(restaurant_phone_number) = 10)
+CREATE TABLE vendors (
+  vendor_id serial PRIMARY KEY,
+  vendor_name VARCHAR(100) NOT NULL UNIQUE,
+  vendor_phone_number VARCHAR(64) CHECK (LENGTH(vendor_phone_number) = 10)
 );
 
 CREATE TABLE products (
   product_id serial PRIMARY KEY,
   product_name VARCHAR(100) NOT NULL,
   product_price REAL NOT NULL,
-  product_restaurant_id INTEGER NOT NULL REFERENCES restaurants(restaurant_id)
+  product_vendor_id INTEGER NOT NULL REFERENCES vendors(vendor_id) ON DELETE CASCADE
 );
 
 CREATE TABLE orders (
   order_id serial PRIMARY KEY,
-  order_user_id INTEGER NOT NULL REFERENCES users(user_id),
-  order_product_id INTEGER NOT NULL REFERENCES products(product_id),
+  order_user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+  order_product_id INTEGER NOT NULL REFERENCES products(product_id) ON DELETE CASCADE,
   order_notes VARCHAR(1000),
   order_paid BOOLEAN DEFAULT false,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE TABLE orders_products (
-  op_order_id INTEGER REFERENCES orders(order_id),
-  op_product_id INTEGER REFERENCES products(product_id),
-  CONSTRAINT orders_products_pkey PRIMARY KEY (op_order_id, op_product_id)
 );
 

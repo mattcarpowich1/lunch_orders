@@ -1,7 +1,7 @@
 const Users = require('../models/users.js');
 
 module.exports = {
-  addUser: function(req, res) {
+  addUser: (req, res) => {
     const {
       username,
       firstName,
@@ -17,6 +17,14 @@ module.exports = {
       password,
       isAdmin
     )
+    .then(res.sendStatus(200))
+    .catch(err => console.log(err));
+  },
+
+  removeUser: (req, res) => {
+    const { id } = req.body;
+
+    Users.deleteOne(id)
     .then(res.sendStatus(200))
     .catch(err => console.log(err));
   }

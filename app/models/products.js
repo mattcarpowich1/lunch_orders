@@ -1,23 +1,18 @@
 const client = require('./connection.js');
 
 module.exports = {
-  insertOne: (...args) => {
+  insertOne: (name, price, vendorId) => {
     return new Promise((resolve, reject) => {
-      const text = `INSERT INTO users (
-        username,
-        first_name,
-        last_name,
-        password_hash,
-        is_admin
-        )
-        VALUES ($1, $2, $3, $4, $5)`;
-      const values = args;
+      const text = `INSERT INTO products (product_name, product_price, product_vendor_id)
+        VALUES ($1, $2, $3)
+        RETURNING product_name, product_price`;
+      const values = [name, price, vendorId];
 
       client.query(text, values, (err, res) => {
         if (err) {
           reject(err.stack);
         } else {
-          resolve();
+          resolve(res.rows[0]);
         }
       });
     });
@@ -25,14 +20,16 @@ module.exports = {
 
   deleteOne: id => {
     return new Promise((resolve, reject) => {
-      const text = `DELETE FROM users WHERE user_id=$1`;
-      const values = [id]
+      const text = `DELETE FROM products 
+        WHERE product_id=$1 
+        RETURNING product_name`;
+      const values = [id];
 
       client.query(text, values, (err, res) => {
         if (err) {
           reject(err.stack);
         } else {
-          resolve();
+          resolve(res.rows[0]);
         }
       });
     });

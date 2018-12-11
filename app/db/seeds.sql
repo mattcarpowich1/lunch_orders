@@ -17,12 +17,12 @@ VALUES (
   'aaaaaaa'
 );
 
-INSERT INTO restaurants (restaurant_name)
+INSERT INTO vendors (vendor_name)
 VALUES (
   'Subway'
 );
 
-INSERT INTO products (product_name, product_price, product_restaurant_id)
+INSERT INTO products (product_name, product_price, product_vendor_id)
 VALUES (
   '6 Inch Meatball Sub',
   5.50,
@@ -34,10 +34,4 @@ VALUES (
   2,
   1,
   'no onions please'
-);
-
-INSERT INTO orders_products (op_order_id, op_product_id) 
-VALUES (
-  1,
-  1
 );
