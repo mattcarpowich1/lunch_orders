@@ -8,6 +8,7 @@ CREATE TABLE users (
   first_name VARCHAR(100) NOT NULL,
   last_name VARCHAR(100) NOT NULL,
   password_hash VARCHAR(1000) NOT NULL,
+  user_balance REAL DEFAULT 0.0,
   is_admin BOOLEAN DEFAULT false,
   created_at TIMESTAMP DEFAULT NOW()
 );

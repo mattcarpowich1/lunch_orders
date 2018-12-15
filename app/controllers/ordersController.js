@@ -1,4 +1,5 @@
 const Orders = require('../models/orders.js');
+const Users = require('../models/users.js');
 
 module.exports = {
   getOrdersToday: (req, res) => {
@@ -32,6 +33,14 @@ module.exports = {
 
     Orders.togglePaid(paid, id)
     .then(result => res.json(result))
+    .catch(err => console.log(err));
+  },
+
+  payAllOrders: (req, res) => {
+    const { id } = req.body;
+
+    Orders.payAllOrdersByUser(id)
+    .then(res.json(200))
     .catch(err => console.log(err));
   }
 }

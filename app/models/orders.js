@@ -73,5 +73,22 @@ module.exports = {
         }
       });
     });
+  },
+
+  payAllOrdersByUser: id => {
+    return new Promise((resolve, reject) => {
+      const text = `UPDATE orders
+        SET order_paid = TRUE
+        WHERE order_user_id = $1`;
+      const values = [id];
+
+      client.query(text, values, (err, res) => {
+        if (err) {
+          reject(err.stack);
+        } else {
+          resolve();
+        }
+      });
+    });
   }
 }
