@@ -16,7 +16,6 @@ router.delete('/removeUser', UsersController.removeUser);
 router.get('/getOrdersToday', OrdersController.getOrdersToday);
 router.get('/getOrdersByUser', OrdersController.getOrdersByUser);
 router.post('/placeOrder', OrdersController.placeOrder);
-router.put('/updateOrderPayment', OrdersController.updateOrderPayment);
 router.delete('/removeOrder', OrdersController.removeOrder);
 
 // Vendor routes
