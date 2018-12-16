@@ -13,6 +13,18 @@ module.exports = {
     .catch(err => console.log(err));
   },
 
+  updateProduct: (req, res) => {
+    const {
+      name, 
+      price, 
+      id
+    } = req.body;
+
+    Products.updateOne(name, price, id)
+    .then(result => res.json(result))
+    .catch(err => console.log(err));
+  },
+
   removeProduct: (req, res) => {
     const { id } = req.body;
 

@@ -8,16 +8,34 @@ module.exports = {
     .catch(err => console.log(err));
   },
 
-  placeOrder: (req, res) => {
+  getOrdersByUser: (req, res) => {
+    const { user_id } = req.query;
+
+    Orders.findAllByUser(user_id)
+    .then(results => res.json(results))
+    .catch(err => console.log(err));
+  },
+
+  placeOrder: async (req, res) => {
     const { 
       userId, 
       productId, 
       orderNotes 
     } = req.body;
 
-    Orders.insertOne(userId, productId, orderNotes)
-    .then(res.sendStatus(200))
-    .catch(err => console.log(err));
+    const orderId = await Orders
+      .insertOne(userId, productId, orderNotes)
+      .catch(err => console.log(err));
+
+    const price = await Orders
+      .findOrderPrice(orderId)
+      .catch(err => console.log(err));
+
+    const balance = await Users
+      .updateBalance(price, userId)
+      .catch(err => console.log(err));
+
+    res.json({balance});
   },
 
   removeOrder: (req, res) => {
@@ -33,14 +51,6 @@ module.exports = {
 
     Orders.togglePaid(paid, id)
     .then(result => res.json(result))
-    .catch(err => console.log(err));
-  },
-
-  payAllOrders: (req, res) => {
-    const { id } = req.body;
-
-    Orders.payAllOrdersByUser(id)
-    .then(res.json(200))
     .catch(err => console.log(err));
   }
 }

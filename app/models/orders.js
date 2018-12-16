@@ -22,6 +22,25 @@ module.exports = {
     });
   },
 
+  findAllByUser: userId => {
+    return new Promise((resolve, reject) => {
+      const text = `SELECT order_id, product_name, product_price, order_notes, o.created_at 
+        FROM orders as o
+        INNER JOIN products as p 
+        ON o.order_product_id = p.product_id
+        WHERE o.order_user_id = $1`;
+      const values = [userId];
+
+      client.query(text, values, (err, res) => {
+        if (err) {
+          reject(err.stack);
+        } else {
+          resolve(res.rows);
+        }
+      });
+    });
+  },
+
   insertOne: (userId, productId, notes) => {
     return new Promise((resolve, reject) => {
       const text = `INSERT INTO orders (
@@ -29,14 +48,15 @@ module.exports = {
         order_product_id,
         order_notes
         )
-        VALUES ($1, $2, $3)`;
+        VALUES ($1, $2, $3)
+        RETURNING order_id`;
       const values = [userId, productId, notes];
 
       client.query(text, values, (err, res) => {
         if (err) {
           reject(err.stack);
         } else {
-          resolve();
+          resolve(res.rows[0]['order_id']);
         }
       });
     });
@@ -52,6 +72,24 @@ module.exports = {
           reject(err.stack);
         } else {
           resolve();
+        }
+      });
+    });
+  },
+
+  findOrderPrice: id => {
+    return new Promise((resolve, reject) => {
+      const text = `SELECT product_price FROM orders
+        INNER JOIN products
+        ON orders.order_product_id = products.product_id
+        WHERE order_id = $1`;
+      const values = [id];
+
+      client.query(text, values, (err, res) => {
+        if (err) {
+          reject(err.stack);
+        } else {
+          resolve(res.rows[0]['product_price']);
         }
       });
     });

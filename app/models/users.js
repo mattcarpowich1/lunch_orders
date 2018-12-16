@@ -23,6 +23,22 @@ module.exports = {
     });
   },
 
+  updateOne: (first, last, id) => {
+    const text = `UPDATE users
+      SET first_name = $1, last_name = $2
+      WHERE user_id = $3
+      RETURNING first_name, last_name`;
+    const values = [first, last, id];
+
+    client.query(text, values, (err, res) => {
+      if (err) {
+        reject(err.stack);
+      } else {
+        resolve(res.rows[0]);
+      }
+    })
+  },
+
   updateBalance: (amt, id) => {
     return new Promise((resolve, reject) => {
       const text = `UPDATE users 
@@ -35,7 +51,7 @@ module.exports = {
         if (err) {
           reject(err.stack);
         } else {
-          resolve(res.rows[0]);
+          resolve(res.rows[0]['user_balance']);
         }
       });
     });

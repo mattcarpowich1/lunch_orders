@@ -22,6 +22,18 @@ module.exports = {
     .catch(err => console.log(err));
   },
 
+  updateUserInfo: (req, res) => {
+    const {
+      firstName,
+      lastName,
+      userId 
+    } = req.body;
+
+    Users.updateOne(firstName, lastName, userId)
+    .then(results => res.json(results))
+    .catch(err => console.log(err));
+  },
+
   updateUserBalance: (req, res) => {
     const { amt, id } = req.body;
 
