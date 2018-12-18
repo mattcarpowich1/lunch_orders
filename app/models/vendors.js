@@ -1,6 +1,20 @@
 const client = require('./connection.js');
 
 module.exports = {
+  findAll: () => {
+    return new Promise((resolve, reject) => {
+      const text = `SELECT vendor_name FROM vendors`;
+
+      client.query(text, (err, res) => {
+        if (err) {
+          reject(err.stack);
+        } else {
+          resolve(res.rows);
+        }
+      });
+    });
+  },
+
   insertOne: name => {
     return new Promise((resolve, reject) => {
       const text = `INSERT INTO vendors (vendor_name)

@@ -1,6 +1,12 @@
 const Vendors = require('../models/vendors.js');
 
 module.exports = {
+  getVendors: (req, res) => {
+    Vendors.findAll()
+    .then(results => res.json(results))
+    .catch(err => console.log(err));
+  },
+
   addVendor: (req, res) => {
     const { name } = req.body;
 

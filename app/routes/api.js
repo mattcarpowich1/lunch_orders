@@ -19,11 +19,13 @@ router.post('/placeOrder', OrdersController.placeOrder);
 router.delete('/removeOrder', OrdersController.removeOrder);
 
 // Vendor routes
+router.get('/getVendors', VendorsController.getVendors);
 router.post('/addVendor', VendorsController.addVendor);
 router.put('/updateVendor', VendorsController.updateVendor);
 router.delete('/removeVendor', VendorsController.removeVendor);
 
 // Product routes
+router.get('/getProducts', ProductsController.getProducts);
 router.post('/addProduct', ProductsController.addProduct);
 router.put('/updateProduct', ProductsController.updateProduct);
 router.delete('/removeProduct', ProductsController.removeProduct);
